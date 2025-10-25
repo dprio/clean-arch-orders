@@ -8,7 +8,7 @@ import (
 
 type (
 	OrderRepository interface {
-		Save(ctx context.Context, order domain.Order) (domain.Order, error)
+		Save(ctx context.Context, order *domain.Order) (domain.Order, error)
 	}
 
 	EventDispatcher interface {
