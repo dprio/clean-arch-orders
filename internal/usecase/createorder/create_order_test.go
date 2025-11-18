@@ -6,6 +6,7 @@ import (
 
 	"github.com/dprio/clean-arch-orders/internal/domain"
 	"github.com/dprio/clean-arch-orders/mocks/createorder"
+	"github.com/dprio/clean-arch-orders/pkg/events"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -20,9 +21,11 @@ func TestExecute(t *testing.T) {
 	cleanUp := func(t *testing.T) {
 		mockOrderRepository.AssertExpectations(t)
 		mockEventDispatcher.AssertExpectations(t)
+		mockEventCreator.AssertExpectations(t)
 
 		mockOrderRepository.Mock = mock.Mock{}
 		mockEventDispatcher.Mock = mock.Mock{}
+		mockEventCreator.Mock = mock.Mock{}
 	}
 
 	t.Run("should create order successfully", func(t *testing.T) {
@@ -33,6 +36,8 @@ func TestExecute(t *testing.T) {
 			Price: 10.0,
 			Tax:   1.0,
 		}
+
+		eventCreator := events.NewEventCreator("")
 
 		expectedOutput := Output{
 			ID:         "",
@@ -47,6 +52,7 @@ func TestExecute(t *testing.T) {
 				return *order, nil
 			})
 
+		mockEventCreator.EXPECT().Create(mock.Anything).Return(eventCreator.Create(expectedOutput))
 		mockEventDispatcher.EXPECT().Dispatch(mock.Anything, mock.Anything).Return(nil)
 
 		//when

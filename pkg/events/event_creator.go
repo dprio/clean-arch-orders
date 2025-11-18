@@ -14,6 +14,13 @@ type (
 	}
 )
 
+func NewEventCreator(eventType EventType) EventCreatorInterface {
+	return &EventCreator{
+		eventType: eventType,
+	}
+
+}
+
 func (ec *EventCreator) Create(payload any) Event {
 	return newEvent(ec.eventType, payload)
 }

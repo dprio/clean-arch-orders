@@ -16,9 +16,9 @@ type (
 		GetDateTime() time.Time
 	}
 
-	EventDispatcher interface {
+	EventDispatcherInterface interface {
 		Dispatch(ctx context.Context, event Event) error
-		RegisterHandler(handler EventHandlerInterface) error
+		RegisterHandler(eventType EventType, handler EventHandlerInterface) error
 	}
 
 	EventHandlerInterface interface {
