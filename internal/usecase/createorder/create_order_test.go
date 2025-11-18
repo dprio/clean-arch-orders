@@ -13,8 +13,9 @@ import (
 func TestExecute(t *testing.T) {
 	mockOrderRepository := createorder.NewMockOrderRepository(t)
 	mockEventDispatcher := createorder.NewMockEventDispatcher(t)
+	mockEventCreator := createorder.NewMockEventCreator(t)
 
-	target := New(mockOrderRepository, mockEventDispatcher)
+	target := New(mockOrderRepository, mockEventDispatcher, mockEventCreator)
 
 	cleanUp := func(t *testing.T) {
 		mockOrderRepository.AssertExpectations(t)

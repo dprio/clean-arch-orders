@@ -7,6 +7,7 @@ package createorder
 import (
 	"context"
 
+	"github.com/dprio/clean-arch-orders/pkg/events"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -38,7 +39,7 @@ func (_m *MockEventDispatcher) EXPECT() *MockEventDispatcher_Expecter {
 }
 
 // Dispatch provides a mock function for the type MockEventDispatcher
-func (_mock *MockEventDispatcher) Dispatch(ctx context.Context, event any) error {
+func (_mock *MockEventDispatcher) Dispatch(ctx context.Context, event events.Event) error {
 	ret := _mock.Called(ctx, event)
 
 	if len(ret) == 0 {
@@ -46,7 +47,7 @@ func (_mock *MockEventDispatcher) Dispatch(ctx context.Context, event any) error
 	}
 
 	var r0 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, any) error); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, events.Event) error); ok {
 		r0 = returnFunc(ctx, event)
 	} else {
 		r0 = ret.Error(0)
@@ -61,20 +62,20 @@ type MockEventDispatcher_Dispatch_Call struct {
 
 // Dispatch is a helper method to define mock.On call
 //   - ctx context.Context
-//   - event any
+//   - event events.Event
 func (_e *MockEventDispatcher_Expecter) Dispatch(ctx interface{}, event interface{}) *MockEventDispatcher_Dispatch_Call {
 	return &MockEventDispatcher_Dispatch_Call{Call: _e.mock.On("Dispatch", ctx, event)}
 }
 
-func (_c *MockEventDispatcher_Dispatch_Call) Run(run func(ctx context.Context, event any)) *MockEventDispatcher_Dispatch_Call {
+func (_c *MockEventDispatcher_Dispatch_Call) Run(run func(ctx context.Context, event events.Event)) *MockEventDispatcher_Dispatch_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 any
+		var arg1 events.Event
 		if args[1] != nil {
-			arg1 = args[1].(any)
+			arg1 = args[1].(events.Event)
 		}
 		run(
 			arg0,
@@ -89,7 +90,7 @@ func (_c *MockEventDispatcher_Dispatch_Call) Return(err error) *MockEventDispatc
 	return _c
 }
 
-func (_c *MockEventDispatcher_Dispatch_Call) RunAndReturn(run func(ctx context.Context, event any) error) *MockEventDispatcher_Dispatch_Call {
+func (_c *MockEventDispatcher_Dispatch_Call) RunAndReturn(run func(ctx context.Context, event events.Event) error) *MockEventDispatcher_Dispatch_Call {
 	_c.Call.Return(run)
 	return _c
 }
