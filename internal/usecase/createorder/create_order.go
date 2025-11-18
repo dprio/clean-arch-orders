@@ -10,12 +10,14 @@ import (
 type createOrder struct {
 	repository      OrderRepository
 	eventDispatcher EventDispatcher
+	eventCreator    EventCreator
 }
 
-func New(repository OrderRepository, eventDispatcher EventDispatcher) UseCase {
+func New(repository OrderRepository, eventDispatcher EventDispatcher, eventCreator EventCreator) UseCase {
 	return &createOrder{
 		repository:      repository,
 		eventDispatcher: eventDispatcher,
+		eventCreator:    eventCreator,
 	}
 }
 
@@ -36,7 +38,7 @@ func (co *createOrder) Execute(ctx context.Context, input Input) (Output, error)
 
 	out := NewOutput(savedOrder)
 
-	if err = co.eventDispatcher.Dispatch(ctx, out); err != nil {
+	if err = co.eventDispatcher.Dispatch(ctx, co.eventCreator.Create(out)); err != nil {
 		return Output{}, err
 	}
 
