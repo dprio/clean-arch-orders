@@ -7,7 +7,7 @@ help: ## Display this help
 .PHONY: run
 run: ## Run application
 	@docker-compose up -d
-	@go run cmd/api/main.go
+	@go run cmd/main.go
 
 .PHONY: lint
 lint: ## Execute syntatic analysis in the code and autofix minor problems
