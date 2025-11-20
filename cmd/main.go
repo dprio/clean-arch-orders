@@ -5,6 +5,8 @@ import "github.com/dprio/clean-arch-orders/cmd/app"
 func main() {
 	app := app.New()
 
-	app.Start()
+	if err := app.Start(); err != nil {
+		println(err.Error())
+	}
 	println("Acabou !")
 }

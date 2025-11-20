@@ -3,6 +3,7 @@ module github.com/dprio/clean-arch-orders
 go 1.24.5
 
 require (
+	github.com/go-chi/chi/v5 v5.2.3
 	github.com/go-sql-driver/mysql v1.9.3
 	github.com/google/uuid v1.6.0
 	github.com/spf13/viper v1.21.0

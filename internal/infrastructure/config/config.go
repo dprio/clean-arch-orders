@@ -6,7 +6,8 @@ import (
 
 type (
 	Config struct {
-		DB *DB `yaml:"db"`
+		DB  *DB  `yaml:"db"`
+		Web *Web `yaml:"web"`
 	}
 
 	DB struct {
@@ -16,6 +17,10 @@ type (
 		User     string `yaml:"user"`
 		Password string `yaml:"password"`
 		Name     string `yaml:"name"`
+	}
+
+	Web struct {
+		Port string `yaml:"port"`
 	}
 )
 
