@@ -10,6 +10,7 @@ import (
 type (
 	OrderRepository interface {
 		Save(ctx context.Context, order *domain.Order) (domain.Order, error)
+		GetAll(ctx context.Context) ([]domain.Order, error)
 	}
 )
 
@@ -36,4 +37,24 @@ func (repo *orderRepository) Save(ctx context.Context, order *domain.Order) (dom
 	}
 
 	return *order, nil
+}
+
+func (repo *orderRepository) GetAll(ctx context.Context) ([]domain.Order, error) {
+	rows, err := repo.db.QueryContext(ctx, "SELECT * FROM orders")
+	if err != nil {
+		return []domain.Order{}, err
+	}
+	defer rows.Close()
+
+	orders := make([]domain.Order, 0)
+	for rows.Next() {
+		var order domain.Order
+		if err := rows.Scan(&order.ID, &order.Price, &order.Tax, &order.FinalPrice); err != nil {
+			return []domain.Order{}, err
+		}
+
+		orders = append(orders, order)
+	}
+
+	return orders, nil
 }
