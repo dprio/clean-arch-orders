@@ -3,6 +3,8 @@ package app
 import (
 	"github.com/dprio/clean-arch-orders/internal/infrastructure/config"
 	"github.com/dprio/clean-arch-orders/internal/infrastructure/db"
+	"github.com/dprio/clean-arch-orders/internal/infrastructure/grpc/grpcserver"
+	"github.com/dprio/clean-arch-orders/internal/infrastructure/grpc/service"
 	"github.com/dprio/clean-arch-orders/internal/infrastructure/web/handlers"
 	"github.com/dprio/clean-arch-orders/internal/infrastructure/web/webserver"
 	"github.com/dprio/clean-arch-orders/internal/usecase"
@@ -10,8 +12,9 @@ import (
 )
 
 type App struct {
-	useCases  *usecase.UseCases
-	webServer *webserver.WebServer
+	useCases   *usecase.UseCases
+	webServer  *webserver.WebServer
+	grpcServer *grpcserver.GRPCServer
 }
 
 func New() *App {
@@ -27,9 +30,14 @@ func New() *App {
 
 	webServer := createWebServer(conf, handlers)
 
+	grpcServices := service.NewGRPCServices(useCases)
+
+	grpcServer := grpcserver.New(grpcServices)
+
 	return &App{
-		useCases:  useCases,
-		webServer: webServer,
+		useCases:   useCases,
+		webServer:  webServer,
+		grpcServer: grpcServer,
 	}
 
 }
@@ -43,5 +51,7 @@ func createWebServer(conf *config.Config, handls *handlers.Handlers) *webserver.
 }
 
 func (app *App) Start() error {
-	return app.webServer.Start()
+	go app.webServer.Start()
+
+	return app.grpcServer.Start()
 }
