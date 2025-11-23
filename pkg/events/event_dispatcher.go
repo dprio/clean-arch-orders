@@ -16,7 +16,9 @@ type eventDispatcher struct {
 }
 
 func NewEventDispatcher() EventDispatcherInterface {
-	return &eventDispatcher{}
+	return &eventDispatcher{
+		handlers: make(map[EventType][]EventHandlerInterface),
+	}
 }
 
 func (ed *eventDispatcher) Dispatch(ctx context.Context, event Event) error {

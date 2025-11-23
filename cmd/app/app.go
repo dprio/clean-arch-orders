@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/dprio/clean-arch-orders/internal/infrastructure/config"
 	"github.com/dprio/clean-arch-orders/internal/infrastructure/db"
+	eventhandlers "github.com/dprio/clean-arch-orders/internal/infrastructure/event/handlers"
 	"github.com/dprio/clean-arch-orders/internal/infrastructure/graph/graphqlserver"
 	"github.com/dprio/clean-arch-orders/internal/infrastructure/graph/resolvers"
 	"github.com/dprio/clean-arch-orders/internal/infrastructure/grpc/grpcserver"
@@ -26,6 +27,7 @@ func New() *App {
 	dataBase := db.New(conf.DB)
 
 	eventDispatcher := events.NewEventDispatcher()
+	eventhandlers.CreateAndRegisterEventHandlers(eventDispatcher)
 
 	useCases := usecase.New(dataBase, eventDispatcher)
 
