@@ -11,6 +11,6 @@ type Handlers struct {
 
 func New(useCases usecase.UseCases) *Handlers {
 	return &Handlers{
-		CreateOrderHandler: orderhandler.New(useCases.CreateOrderUseCase),
+		CreateOrderHandler: orderhandler.New(useCases.CreateOrderUseCase, useCases.GetOrdersUseCase),
 	}
 }

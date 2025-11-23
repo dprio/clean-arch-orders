@@ -55,7 +55,8 @@ func New() *App {
 func createWebServer(conf *config.Config, handls *handlers.Handlers) *webserver.WebServer {
 	webServer := webserver.New(conf.Web)
 
-	webServer.AddHandler("POST", "/order", handls.CreateOrderHandler.Create)
+	webServer.AddHandler("POST", "/orders", handls.CreateOrderHandler.Create)
+	webServer.AddHandler("GET", "/orders", handls.CreateOrderHandler.GetAll)
 
 	return webServer
 }

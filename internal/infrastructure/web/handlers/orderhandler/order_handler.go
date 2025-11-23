@@ -5,14 +5,19 @@ import (
 	"net/http"
 
 	"github.com/dprio/clean-arch-orders/internal/usecase/createorder"
+	"github.com/dprio/clean-arch-orders/internal/usecase/getorders"
 )
 
 type OrderHandler struct {
 	createOrderUseCase createorder.UseCase
+	getOrderUseCase    getorders.UseCase
 }
 
-func New(useCase createorder.UseCase) *OrderHandler {
-	return &OrderHandler{createOrderUseCase: useCase}
+func New(createOrderUseCase createorder.UseCase, getOrdersUseCase getorders.UseCase) *OrderHandler {
+	return &OrderHandler{
+		createOrderUseCase: createOrderUseCase,
+		getOrderUseCase:    getOrdersUseCase,
+	}
 }
 
 func (h *OrderHandler) Create(w http.ResponseWriter, r *http.Request) {
@@ -32,6 +37,28 @@ func (h *OrderHandler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := NewCreateOrderResponse(output)
+	w.Header().Add("content-type", "application/json")
+	err = json.NewEncoder(w).Encode(response)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+func (h *OrderHandler) GetAll(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	output, err := h.getOrderUseCase.Execute(ctx)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	response := make([]orderResponse, len(output))
+	for i, out := range output {
+		response[i] = NewCreateOrderResponse(createorder.Output(out))
+	}
+
 	w.Header().Add("content-type", "application/json")
 	err = json.NewEncoder(w).Encode(response)
 	if err != nil {
