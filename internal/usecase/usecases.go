@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"github.com/dprio/clean-arch-orders/internal/domain/eventtype"
 	"github.com/dprio/clean-arch-orders/internal/infrastructure/db"
 	"github.com/dprio/clean-arch-orders/internal/usecase/createorder"
 	"github.com/dprio/clean-arch-orders/pkg/events"
@@ -17,6 +18,6 @@ func New(dbs *db.DBs, eventDispatcher events.EventDispatcherInterface) *UseCases
 }
 
 func buildCreateOrderUseCase(dbs *db.DBs, eventDispatcher createorder.EventDispatcher) createorder.UseCase {
-	eventCreator := events.NewEventCreator("order_created")
+	eventCreator := events.NewEventCreator(eventtype.OrderCreated)
 	return createorder.New(dbs.OrderRepository, eventDispatcher, eventCreator)
 }
