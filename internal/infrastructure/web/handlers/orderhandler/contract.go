@@ -8,7 +8,7 @@ type (
 		Tax   float64 `json:"tax"`
 	}
 
-	createOrderResponse struct {
+	orderResponse struct {
 		ID         string  `json:"id"`
 		Price      float64 `json:"price"`
 		Tax        float64 `json:"tax"`
@@ -23,8 +23,8 @@ func (r *createOrderRequest) ToCreateOrderInput() createorder.Input {
 	}
 }
 
-func NewCreateOrderResponse(out createorder.Output) createOrderResponse {
-	return createOrderResponse{
+func NewCreateOrderResponse(out createorder.Output) orderResponse {
+	return orderResponse{
 		ID:         out.ID,
 		Price:      out.Price,
 		Tax:        out.Tax,

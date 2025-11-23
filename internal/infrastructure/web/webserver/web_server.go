@@ -10,7 +10,7 @@ import (
 
 type WebServer struct {
 	router        chi.Router
-	handlers      map[string]http.HandlerFunc
+	handlers      map[route]http.HandlerFunc
 	webServerPort string
 }
 
@@ -22,18 +22,21 @@ type route struct {
 func New(webConfig *config.Web) *WebServer {
 	return &WebServer{
 		router:        chi.NewRouter(),
-		handlers:      make(map[string]http.HandlerFunc),
+		handlers:      make(map[route]http.HandlerFunc),
 		webServerPort: webConfig.Port,
 	}
 }
 
 func (ws *WebServer) AddHandler(method, path string, handler http.HandlerFunc) {
-	ws.handlers[path] = handler
+	ws.handlers[route{
+		method: method,
+		path:   path,
+	}] = handler
 }
 
 func (ws *WebServer) Start() error {
-	for path, handler := range ws.handlers {
-		ws.router.Handle(path, handler)
+	for route, handler := range ws.handlers {
+		ws.router.Method(route.method, route.path, handler)
 	}
 
 	return http.ListenAndServe(fmt.Sprintf("localhost:%s", ws.webServerPort), ws.router)
