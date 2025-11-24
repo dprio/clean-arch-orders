@@ -11,6 +11,6 @@ type GRPCServices struct {
 
 func NewGRPCServices(useCases *usecase.UseCases) *GRPCServices {
 	return &GRPCServices{
-		OrderService: NewOrderService(useCases.CreateOrderUseCase),
+		OrderService: NewOrderService(useCases.CreateOrderUseCase, useCases.GetOrdersUseCase),
 	}
 }
