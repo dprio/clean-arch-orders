@@ -8,7 +8,10 @@ type Resolvers struct {
 
 func NewGraphQLResolvers(useCases *usecase.UseCases) *Resolvers {
 	return &Resolvers{
-		OrderResolver: &Resolver{createOrderUseCase: useCases.CreateOrderUseCase},
+		OrderResolver: &Resolver{
+			createOrderUseCase: useCases.CreateOrderUseCase,
+			getOrdersUseCase:   useCases.GetOrdersUseCase,
+		},
 	}
 
 }

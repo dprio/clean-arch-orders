@@ -13,7 +13,7 @@ import (
 )
 
 // CreateOrder is the resolver for the createOrder field.
-func (r *mutationResolver) CreateOrder(ctx context.Context, input *model.OrderRequest) (*model.OrderResponse, error) {
+func (r *mutationResolver) CreateOrder(ctx context.Context, input model.OrderRequest) (*model.OrderResponse, error) {
 	in := createorder.Input{
 		Price: input.Price,
 		Tax:   input.Tax,
@@ -32,7 +32,31 @@ func (r *mutationResolver) CreateOrder(ctx context.Context, input *model.OrderRe
 	}, nil
 }
 
+// GetOrders is the resolver for the getOrders field.
+func (r *queryResolver) GetOrders(ctx context.Context) ([]*model.OrderResponse, error) {
+	output, err := r.getOrdersUseCase.Execute(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	response := make([]*model.OrderResponse, len(output))
+	for i, out := range output {
+		response[i] = &model.OrderResponse{
+			ID:         out.ID,
+			Price:      out.Price,
+			Tax:        out.Tax,
+			FinalPrice: out.FinalPrice,
+		}
+	}
+
+	return response, nil
+}
+
 // Mutation returns graph.MutationResolver implementation.
 func (r *Resolver) Mutation() graph.MutationResolver { return &mutationResolver{r} }
 
+// Query returns graph.QueryResolver implementation.
+func (r *Resolver) Query() graph.QueryResolver { return &queryResolver{r} }
+
 type mutationResolver struct{ *Resolver }
+type queryResolver struct{ *Resolver }

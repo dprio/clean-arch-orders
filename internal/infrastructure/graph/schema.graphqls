@@ -11,5 +11,9 @@ input OrderRequest {
 }
 
 type Mutation {
-    createOrder(input: OrderRequest): OrderResponse
+    createOrder(input: OrderRequest!): OrderResponse
+}
+
+type Query {
+    getOrders: [OrderResponse]
 }
