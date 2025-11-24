@@ -1,6 +1,9 @@
 package resolvers
 
-import "github.com/dprio/clean-arch-orders/internal/usecase/createorder"
+import (
+	"github.com/dprio/clean-arch-orders/internal/usecase/createorder"
+	"github.com/dprio/clean-arch-orders/internal/usecase/getorders"
+)
 
 // This file will not be regenerated automatically.
 //
@@ -8,4 +11,5 @@ import "github.com/dprio/clean-arch-orders/internal/usecase/createorder"
 
 type Resolver struct {
 	createOrderUseCase createorder.UseCase
+	getOrdersUseCase   getorders.UseCase
 }

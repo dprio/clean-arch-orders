@@ -4,9 +4,13 @@
 help: ## Display this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(firstword $(MAKEFILE_LIST)) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
+.PHONY: infra
+infra: ## Start necessary infrastructure
+	@docker-compose up -d
+
+
 .PHONY: run
 run: ## Run application
-	@docker-compose up -d
 	@go run cmd/main.go
 
 .PHONY: lint
