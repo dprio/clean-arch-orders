@@ -39,5 +39,5 @@ func (ws *WebServer) Start() error {
 		ws.router.Method(route.method, route.path, handler)
 	}
 
-	return http.ListenAndServe(fmt.Sprintf("localhost:%s", ws.webServerPort), ws.router)
+	return http.ListenAndServe(fmt.Sprintf(":%s", ws.webServerPort), ws.router)
 }

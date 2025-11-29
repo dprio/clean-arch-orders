@@ -64,5 +64,7 @@ func createWebServer(conf *config.Config, handls *handlers.Handlers) *webserver.
 func (app *App) Start() error {
 	go app.webServer.Start()
 	go app.grpcServer.Start()
+
+	println("app started successfully...")
 	return app.graphQlServer.Start()
 }

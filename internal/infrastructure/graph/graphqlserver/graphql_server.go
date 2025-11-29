@@ -42,5 +42,5 @@ func (g *GraphQLServer) Start() error {
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", g.server)
 
-	return http.ListenAndServe("localhost:"+g.port, nil)
+	return http.ListenAndServe(":"+g.port, nil)
 }

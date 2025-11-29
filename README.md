@@ -8,19 +8,9 @@ Este projeto é uma aplicação que possibilita uma simples criação de order e
 - evans
 - Make
 
-## Como executar
+## Como subir a aplicação
 
-1. **Subir a infra necessária**
-
-```bash
-make infra
-```
-
-2. **Iniciar a aplicação**
-
-```bash
-make run
-```
+`docker-compose up`
 
 ## Funcionamento
 

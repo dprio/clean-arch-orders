@@ -27,7 +27,7 @@ type (
 func New() *Config {
 	viper.SetConfigName("application")
 	viper.SetConfigType("yaml")
-	viper.AddConfigPath("/workspaces/clean-arch-orders/config")
+	viper.AddConfigPath("./config")
 
 	if err := viper.ReadInConfig(); err != nil {
 		panic(err)
